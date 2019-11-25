@@ -1,15 +1,10 @@
 import Vue from 'vue';
-import VueRouter from 'vue-router';
-import { routes } from './routes.js';
 import { store } from './store/store.js';
 import App from './App.vue';
+import router from './routes.js';
+import Axios from 'axios'
 
-Vue.use(VueRouter);
-
-const router = new VueRouter({
-  mode: 'history',
-  routes
-});
+Axios.defaults.baseURL = 'https://localhost:44346/api/';
 
 Vue.config.productionTip = false
 

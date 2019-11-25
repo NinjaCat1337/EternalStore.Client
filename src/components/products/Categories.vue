@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="grid">
     <div v-for="category in categories" :key="category.id">
       {{category.name}}
       <component-products-for-category :idCategory="category.id"></component-products-for-category>
@@ -8,19 +8,19 @@
 </template>
 
 <script>
-import Axios from 'axios';
-import ProductsForCategory from './ProductsForCategory.vue';
+import Axios from "axios";
+import ProductsForCategory from "./ProductsForCategory.vue";
 
 export default {
-  data(){
-    return{
+  data() {
+    return {
       categories: []
-    }
+    };
   },
-  mounted(){
-    Axios
-      .get('https://localhost:44346/api/store/categories')
-      .then(response => (this.categories = response.data));
+  mounted() {
+    Axios.get("/store/categories").then(
+      response => (this.categories = response.data)
+    );
   },
   components: {
     componentProductsForCategory: ProductsForCategory
@@ -29,4 +29,8 @@ export default {
 </script>
 
 <style scoped>
+.grid {
+  padding-left: 15%;
+  padding-right: 15%;
+}
 </style>

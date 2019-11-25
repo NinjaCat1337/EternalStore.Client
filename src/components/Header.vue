@@ -11,10 +11,10 @@
       </ul>
       <ul class="main-menu-right navbar-nav d-flex justify-content-end">
         <li class="nav-item">
-          <a class="nav-link" href="#">Sign In</a>
+          <router-link class="nav-link" to="/login" tag="a">Sign In</router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Sign Up</a>
+          <router-link class="nav-link" to="/register" tag="a">Sign Up</router-link>
         </li>
       </ul>
     </nav>

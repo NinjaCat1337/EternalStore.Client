@@ -20,7 +20,7 @@ export default {
   },
   mounted(){
     Axios
-      .get('https://localhost:44346/api/store/categories/'+ this.idCategory + '/products')
+      .get('/store/categories/'+ this.idCategory + '/products')
       .then(response => (this.products = response.data));
   },
 };

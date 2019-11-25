@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import Axios from 'axios';
+import Axios from "../axios-auth.js";
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-
+    token: null
   },
 
   getters: {
@@ -14,27 +14,29 @@ export const store = new Vuex.Store({
   },
 
   mutations: {
- 
+    authorizeUser(state, authData) {
+      state.token = authData.token;
+    }
   },
 
   actions: {
-    LOAD_CATEGORIES({ commit }) {
+    login({ commit }, authData) {
       Axios
-        .get('https://localhost:44346/api/store/categories')
-        .then(r => r.data)
-        .then(categories => {
-          commit('SET_CATEGORIES', categories)
+        .post("login", authData)
+        .then(response => {
+          console.log(response);
+          commit('authorizeUser', { token: response.data.token })
         })
+        .catch(error => console.log(error));
     },
-    LOAD_PRODUCTS({ commit }) {
-      this.state.categories.forEach(function (category, index) {
-        Axios
-          .get('https://localhost:44346/api/store/categories/' + category.id + '/products')
-          .then(r => r.data)
-          .then(products => {
-            commit('SET_PRODUCTS', {products, index})
-          });
-      });
+    register({ commit }, authData) {
+      Axios
+        .post("register", authData)
+        .then(response => {
+          console.log(response);
+          commit('authorizeUser', { token: response.data.token })
+        })
+        .catch(error => console.log(error));
     }
   },
 });
