@@ -12,6 +12,9 @@ export default {
   name: 'app',
   components: {
     componentHeader: Header
+  },
+  created(){
+    this.$store.dispatch('resumeSession');
   }
 }
 </script>

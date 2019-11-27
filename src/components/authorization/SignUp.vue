@@ -41,6 +41,9 @@
 </template>
 
 <script>
+import router from '../../routes.js';
+import Axios from "../../axios-auth.js";
+
 export default {
   data() {
     return {
@@ -65,7 +68,13 @@ export default {
         terms: this.terms
       };
       console.log(formData);
-      this.$store.dispatch('register', formData)
+      Axios
+        .post("register", formData)
+        .then(response => {
+          if(response.data.success)
+          router.replace('/login');
+        })
+        .catch(error => console.log(error));
     }
   }
 };

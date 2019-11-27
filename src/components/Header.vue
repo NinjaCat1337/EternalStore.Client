@@ -10,11 +10,14 @@
         </li>
       </ul>
       <ul class="main-menu-right navbar-nav d-flex justify-content-end">
-        <li class="nav-item">
+        <li class="nav-item" v-if="!authetnicated">
           <router-link class="nav-link" to="/login" tag="a">Sign In</router-link>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" v-if="!authetnicated">
           <router-link class="nav-link" to="/register" tag="a">Sign Up</router-link>
+        </li>
+        <li class="nav-item" v-if="authetnicated">
+          <button class="btn btn-secondary" @click="logout">Logout</button>
         </li>
       </ul>
     </nav>
@@ -22,7 +25,18 @@
 </template>
 
 <script>
-export default {};
+export default {
+  computed: {
+    authetnicated(){
+      return this.$store.getters.isAuthenticated;
+    }
+  },
+  methods: {
+    logout(){
+      this.$store.dispatch('logout');
+    }
+  }
+};
 </script>
 
 <style scoped>
