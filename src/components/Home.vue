@@ -1,6 +1,7 @@
 <template>
   <div class="field">
     <button @click="showModal">test modal</button>  
+  </div>
 </template>
 
 <script>
