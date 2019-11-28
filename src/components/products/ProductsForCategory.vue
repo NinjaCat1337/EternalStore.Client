@@ -12,7 +12,7 @@
           :to="{name: 'editproduct', params: {idCategory, idProduct: product.id}}"
           tag="button"
         >Edit Product</router-link>
-        <button class="btn btn-light" @click="removeProduct(product)">Remove</button>
+        <button class="btn btn-light" @click="tryRemoveProduct(product)">Remove</button>
       </div>
     </div>
   </div>
@@ -29,6 +29,16 @@ export default {
     };
   },
   methods: {
+    tryRemoveProduct(product) {
+      const params = {
+        title: "Attention!",
+        text: "Are you sure to delete this item?",
+        onConfirm: () => {
+          return this.removeProduct(product);
+        }
+      };
+      this.$dialogue.show(params)
+    },
     removeProduct(product){
       Axios
       .delete('/store/categories/'+ this.idCategory + '/products/' + product.id)

@@ -16,7 +16,11 @@
           :to="{ name: 'editcategory', params: {idCategory: category.id}}"
           tag="button"
         >Edit Category</router-link>
-        <button class="btn btn-light mr-1" v-if="!category.isEnabled" @click="enableCategory(category, index)">Enable</button>
+        <button
+          class="btn btn-light mr-1"
+          v-if="!category.isEnabled"
+          @click="enableCategory(category, index)"
+        >Enable</button>
         <button class="btn btn-light" v-else @click="disableCategory(category, index)">Disable</button>
       </div>
     </div>
@@ -35,13 +39,15 @@ export default {
   },
   methods: {
     enableCategory(category, index) {
-      Axios.delete("/store/categories/" + category.id)
-      .then(this.categories[index].isEnabled = true);
+      Axios.delete("/store/categories/" + category.id).then(
+        (this.categories[index].isEnabled = true)
+      );
     },
     disableCategory(category, index) {
       console.log(category);
-      Axios.delete("/store/categories/" + category.id)
-      .then(this.categories[index].isEnabled = false);
+      Axios.delete("/store/categories/" + category.id).then(
+        (this.categories[index].isEnabled = false)
+      );
     }
   },
   mounted() {

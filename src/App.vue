@@ -2,6 +2,7 @@
   <div id="app">
     <component-header></component-header>
     <router-view></router-view>
+    <component-dialogue></component-dialogue>
   </div>
 </template>
 
