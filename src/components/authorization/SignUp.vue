@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import router from '../../routes.js';
+import router from "../../routes.js";
 import Axios from "../../axios-auth.js";
 
 export default {
@@ -67,14 +67,18 @@ export default {
         email: this.email,
         terms: this.terms
       };
-      console.log(formData);
-      Axios
-        .post("register", formData)
+      Axios.post("register", formData)
         .then(response => {
-          if(response.data.success)
-          router.replace('/login');
+          if (response.data.success) router.replace("/login");
         })
-        .catch(error => console.log(error));
+        .catch(error => {
+          const params = {
+            title: "Error!",
+            text: error.response.data.error,
+            type: "error"
+          };
+          this.$dialogue.show(params);
+        });
     }
   }
 };

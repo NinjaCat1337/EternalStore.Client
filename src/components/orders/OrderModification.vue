@@ -1,18 +1,10 @@
 <template>
-  <div id="productinsertion">
+    <div id="categoryinsertion">
     <div class="addition-form">
       <form @submit.prevent="onSubmit">
         <div class="input">
           <label for="name">Name</label>
-          <input type="text" id="name" v-model="name" />
-        </div>
-        <div class="input">
-          <label for="description">Description</label>
-          <input type="text" id="description" v-model="description" />
-        </div>
-        <div class="input">
-          <label for="price">Price</label>
-          <input type="number" id="price" v-model="price" />
+          <input type="name" id="name" v-model="name" />
         </div>
         <div class="submit">
           <button type="submit">Submit</button>
@@ -23,36 +15,25 @@
 </template>
 
 <script>
-import router from "../../routes.js";
+import router from '../../routes.js';
 import Axios from "axios";
 
 export default {
   data() {
     return {
-      name: "",
-      description: "",
-      price: null,
-      idCategory: this.$route.params.idCategory
+      name: ""
     };
   },
   methods: {
     onSubmit() {
       const formData = {
-        name: this.name,
-        description: this.description,
-        price: this.price,
-        idCategory: this.idCategory
+        name: this.name
       };
-      Axios.post("store/categories/" + this.idCategory + "/products", formData)
-        .then(router.replace("/store"))
-        .catch(error => {
-          const params = {
-            title: "Error!",
-            text: error.response.data.error,
-            type: "error"
-          };
-          this.$dialogue.show(params);
-        });
+      console.log(formData);
+      Axios
+        .post("store/categories", formData)
+        .then(router.replace('/store'))
+        .catch(error => console.log(error));
     }
   }
 };

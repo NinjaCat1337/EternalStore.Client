@@ -47,7 +47,14 @@ export default {
       };
       Axios.put("store/categories/" + this.idCategory + '/products/' + this.idProduct, formData)
         .then(router.replace('/store'))
-        .catch(error => console.log(error));
+        .catch(error => {
+          const params = {
+            title: "Error!",
+            text: error.response.data.error,
+            type: "error"
+          };
+          this.$dialogue.show(params);
+        });
     }
   },
   mounted() {
@@ -57,7 +64,14 @@ export default {
         this.description = response.data.description;
         this.price = response.data.price;
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+          const params = {
+            title: "Error!",
+            text: error.response.data.error,
+            type: "error"
+          };
+          this.$dialogue.show(params);
+        });
   }
 };
 </script>

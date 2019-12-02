@@ -11,8 +11,14 @@
         <li class="nav-item">
           <router-link class="nav-link" :to="{name: 'addcategory'}" tag="a">Add Category</router-link>
         </li>
+        <li class="nav-item">
+          <router-link class="nav-link" :to="{name: 'orders'}" tag="a">Orders</router-link>
+        </li>
       </ul>
       <ul class="main-menu-right navbar-nav d-flex justify-content-end">
+        <li class="nav-item" v-if="haveItemsInOrder">
+          <router-link class="btn-main-light btn-main-hover-blue mr-2" :to="{name: 'addorder'}" tag="button">Shopping Cart</router-link>
+        </li>
         <li class="nav-item" v-if="!authetnicated">
           <router-link class="nav-link" :to="{name: 'login'}" tag="a">Sign In</router-link>
         </li>
@@ -20,7 +26,7 @@
           <router-link class="nav-link" :to="{name: 'register'}" tag="a">Sign Up</router-link>
         </li>
         <li class="nav-item" v-if="authetnicated">
-          <button class="btn btn-secondary" @click="logout">Logout</button>
+          <button class="btn-main-light btn-main-hover-red" @click="logout">Logout</button>
         </li>
       </ul>
     </nav>
@@ -32,6 +38,9 @@ export default {
   computed: {
     authetnicated(){
       return this.$store.getters.isAuthenticated;
+    },
+    haveItemsInOrder(){
+      return this.$store.getters.haveItemsInOrder
     }
   },
   methods: {

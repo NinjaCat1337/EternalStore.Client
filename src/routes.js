@@ -7,6 +7,9 @@ import CategoryInsertion from './components/products/CategoryInsertion.vue';
 import CategoryModification from './components/products/CategoryModification.vue';
 import ProductInsertion from './components/products/ProductInsertion.vue';
 import ProductModification from './components/products/ProductModification.vue';
+import Orders from './components/orders/Orders.vue';
+import OrderInsertion from './components/orders/OrderInsertion.vue';
+import OrderModification from './components/orders/OrderModification.vue';
 import SignIn from './components/authorization/SignIn.vue';
 import SignUp from './components/authorization/SignUp.vue';
 
@@ -19,6 +22,9 @@ export const routes = [
     { name: "editcategory", path: '/store/editcategory/:idCategory', component: CategoryModification },
     { name: "addproduct", path: '/store/:idCategory/addproduct', component: ProductInsertion },
     { name: "editproduct", path: '/store/:idCategory/:idProduct/editproduct', component: ProductModification },
+    { name: "orders", path: '/orders', component: Orders },
+    { name: "addorder", path: '/orders/addorder', component: OrderInsertion },
+    { name: "editorder", path: '/orders/:idOrder', component: OrderModification },
     { name: "register", path: '/register', component: SignUp },
     { name: "login", path: '/login', component: SignIn },
 ];

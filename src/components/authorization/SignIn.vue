@@ -19,78 +19,93 @@
 </template>
 
 <script>
+import Axios from "../../axios-auth.js";
+
 export default {
-    data () {
-      return {
-        login: '',
-        password: ''
-      }
-    },
-    methods: {
-      onSubmit () {
-        const formData = {
-          login: this.login,
-          password: this.password,
-        }
-        this.$store.dispatch('login', formData)
-      }
+  data() {
+    return {
+      login: "",
+      password: ""
+    };
+  },
+  methods: {
+    onSubmit() {
+      const formData = {
+        login: this.login,
+        password: this.password
+      };
+      Axios.post("login", formData)
+        .then(response => {
+          if (response.data.success)
+            this.$store.dispatch("login", {token: response.data.token, expiresInMinutes: response.data.expiresInMinutes})
+            .then(this.$store.dispatch("setLogoutTimer", {expiresInMinutes: response.data.expiresInMinutes}));
+        })
+        .catch(error => {
+          const params = {
+            title: "Error!",
+            text: error.response.data.error,
+            type: "error"
+          };
+          this.$dialogue.show(params);
+        });
     }
   }
+};
 </script>
 
 <style scoped>
 .signin-form {
-    width: 400px;
-    margin: 30px auto;
-    border: 1px solid #eee;
-    padding: 20px;
-    box-shadow: 0 2px 3px #ccc;
-  }
+  width: 400px;
+  margin: 30px auto;
+  border: 1px solid #eee;
+  padding: 20px;
+  box-shadow: 0 2px 3px #ccc;
+}
 
-  .input {
-    margin: 10px auto;
-  }
+.input {
+  margin: 10px auto;
+}
 
-  .input label {
-    display: block;
-    color: #4e4e4e;
-    margin-bottom: 6px;
-  }
+.input label {
+  display: block;
+  color: #4e4e4e;
+  margin-bottom: 6px;
+}
 
-  .input input {
-    font: inherit;
-    width: 100%;
-    padding: 6px 12px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-  }
+.input input {
+  font: inherit;
+  width: 100%;
+  padding: 6px 12px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+}
 
-  .input input:focus {
-    outline: none;
-    border: 1px solid #343a40;
-    background-color: #eee;
-  }
+.input input:focus {
+  outline: none;
+  border: 1px solid #343a40;
+  background-color: #eee;
+}
 
-  .submit button {
-    border: 1px solid #343a40;
-    color: #343a40;
-    padding: 10px 20px;
-    font: inherit;
-    cursor: pointer;
-  }
+.submit button {
+  border: 1px solid #343a40;
+  color: #343a40;
+  padding: 10px 20px;
+  font: inherit;
+  cursor: pointer;
+}
 
-  .submit button:hover,
-  .submit button:active {
-    background-color: #343a40;
-    color: white;
-  }
+.submit button:hover,
+.submit button:active {
+  background-color: #343a40;
+  color: white;
+}
 
-  .submit button[disabled],
-  .submit button[disabled]:hover,
-  .submit button[disabled]:active {
-    border: 1px solid #ccc;
-    background-color: transparent;
-    color: #ccc;
-    cursor: not-allowed;
-  }
+.submit button[disabled],
+.submit button[disabled]:hover,
+.submit button[disabled]:active {
+  border: 1px solid #ccc;
+  background-color: transparent;
+  color: #ccc;
+  cursor: not-allowed;
+}
 </style>
