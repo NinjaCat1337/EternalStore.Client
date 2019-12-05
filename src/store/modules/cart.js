@@ -10,7 +10,7 @@ const getters = {
         return state.orderItems.length > 0;
     },
     totalPrice(state){
-        var totalPrice = 0;
+        let totalPrice = 0;
         state.orderItems.forEach(function(item) {
             totalPrice += item.qty * item.price;
           });
@@ -24,12 +24,12 @@ const mutations = {
         state.orderItems.push(product);
     },
     incrementQty(state, index){
-        var newElement = state.orderItems[index];
+        let newElement = state.orderItems[index];
         newElement.qty++;
         state.orderItems.splice(index, 1, newElement)
     },
     decrementQty(state, index){
-        var newElement = state.orderItems[index];
+        let newElement = state.orderItems[index];
         newElement.qty--;
         state.orderItems.splice(index, 1, newElement)
     },
@@ -40,7 +40,7 @@ const mutations = {
 
 const actions = {
     addProductToCart({ commit }, product) {
-        var productIsInCart = state.orderItems.find(e => e.idProduct === product.idProduct);
+        let productIsInCart = state.orderItems.find(e => e.idProduct === product.idProduct);
         if (productIsInCart) {
             state.orderItems[state.orderItems.indexOf(productIsInCart)].qty++;
         }

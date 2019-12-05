@@ -9,7 +9,7 @@ import ProductInsertion from './components/products/ProductInsertion.vue';
 import ProductModification from './components/products/ProductModification.vue';
 import Orders from './components/orders/Orders.vue';
 import OrderInsertion from './components/orders/OrderInsertion.vue';
-import OrderModification from './components/orders/OrderModification.vue';
+import OrderDetails from './components/orders/OrderDetails.vue';
 import SignIn from './components/authorization/SignIn.vue';
 import SignUp from './components/authorization/SignUp.vue';
 
@@ -24,7 +24,7 @@ export const routes = [
     { name: "editproduct", path: '/store/:idCategory/:idProduct/editproduct', component: ProductModification },
     { name: "orders", path: '/orders', component: Orders },
     { name: "addorder", path: '/orders/addorder', component: OrderInsertion },
-    { name: "editorder", path: '/orders/:idOrder', component: OrderModification },
+    { name: "orderdetails", path: '/orders/:idOrder', component: OrderDetails },
     { name: "register", path: '/register', component: SignUp },
     { name: "login", path: '/login', component: SignIn },
 ];

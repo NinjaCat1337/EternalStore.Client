@@ -43,7 +43,7 @@ export default {
         price: this.price,
         idCategory: this.idCategory
       };
-      Axios.post("store/categories/" + this.idCategory + "/products", formData)
+      Axios.post(`store/categories/${this.idCategory}/products`, formData)
         .then(router.replace("/store"))
         .catch(error => {
           const params = {
