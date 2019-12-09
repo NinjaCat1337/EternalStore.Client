@@ -1,7 +1,7 @@
 <template>
   <div id="signin">
-    <div class="signin-form">
-      <form @submit.prevent="onSubmit">
+    <div class="card bg-dark mb-3 signin-form">
+      <div class="card-body">
         <div class="input">
           <label for="login">Login</label>
           <input type="login" id="login" v-model="login" />
@@ -10,10 +10,10 @@
           <label for="password">Password</label>
           <input type="password" id="password" v-model="password" />
         </div>
-        <div class="submit">
-          <button type="submit">Submit</button>
-        </div>
-      </form>
+      </div>
+      <div class="card-footer text-center">
+        <button class="btn-main-dark btn-main-hover-green mr-1" @click="onSubmit()">Submit</button>
+      </div>
     </div>
   </div>
 </template>
@@ -34,11 +34,19 @@ export default {
         login: this.login,
         password: this.password
       };
-      Axios.post("login", formData)
+      Axios.post(`login`, formData)
         .then(response => {
           if (response.data.success)
-            this.$store.dispatch("login", {token: response.data.token, expiresInMinutes: response.data.expiresInMinutes})
-            .then(this.$store.dispatch("setLogoutTimer", {expiresInMinutes: response.data.expiresInMinutes}));
+            this.$store
+              .dispatch("login", {
+                token: response.data.token,
+                expiresInMinutes: response.data.expiresInMinutes
+              })
+              .then(
+                this.$store.dispatch("setLogoutTimer", {
+                  expiresInMinutes: response.data.expiresInMinutes
+                })
+              );
         })
         .catch(error => {
           const params = {
@@ -60,52 +68,5 @@ export default {
   border: 1px solid #eee;
   padding: 20px;
   box-shadow: 0 2px 3px #ccc;
-}
-
-.input {
-  margin: 10px auto;
-}
-
-.input label {
-  display: block;
-  color: #4e4e4e;
-  margin-bottom: 6px;
-}
-
-.input input {
-  font: inherit;
-  width: 100%;
-  padding: 6px 12px;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-}
-
-.input input:focus {
-  outline: none;
-  border: 1px solid #343a40;
-  background-color: #eee;
-}
-
-.submit button {
-  border: 1px solid #343a40;
-  color: #343a40;
-  padding: 10px 20px;
-  font: inherit;
-  cursor: pointer;
-}
-
-.submit button:hover,
-.submit button:active {
-  background-color: #343a40;
-  color: white;
-}
-
-.submit button[disabled],
-.submit button[disabled]:hover,
-.submit button[disabled]:active {
-  border: 1px solid #ccc;
-  background-color: transparent;
-  color: #ccc;
-  cursor: not-allowed;
 }
 </style>

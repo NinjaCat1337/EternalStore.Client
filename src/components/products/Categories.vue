@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     enableCategory(category, index) {
-      Axios.delete("/store/categories/" + category.idCategory)
+      Axios.delete(`/store/categories/${category.idCategory}`)
       .then(this.categories[index].isEnabled = true)
       .catch(error => {
           const params = {
@@ -51,7 +51,7 @@ export default {
         });
     },
     disableCategory(category, index) {
-      Axios.delete("/store/categories/" + category.idCategory)
+      Axios.delete(`/store/categories/${category.idCategory}`)
       .then(this.categories[index].isEnabled = false)
       .catch(error => {
           const params = {
@@ -64,7 +64,7 @@ export default {
     }
   },
   mounted() {
-    Axios.get("/store/categories").then(
+    Axios.get(`/store/categories`).then(
       response => (this.categories = response.data)
     );
   },

@@ -1,8 +1,8 @@
 <template>
   <div class="field">
     <div class="card text-white bg-dark mb-1">
-      <!-- <span class="row text-center">
-        <div class="input">
+      <span class="row text-center">
+        <!-- <div class="input">
           <label for="orderDateFrom">Order Date (From)</label>
           <input
             class="text-center"
@@ -32,8 +32,8 @@
             id="deliveryDateFrom"
             v-model="deliveryDateFrom"
           />
-        </div>
-      </span> -->
+        </div>-->
+      </span>
       <table class="table table-dark">
         <thead>
           <tr class="text-center">
@@ -46,7 +46,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(order, index) in orders" :key="index">
+          <tr v-for="(order, index) in filteredOrders" :key="index">
             <th scope="row">{{order.idOrder}}</th>
             <td>{{order.orderDate}}</td>
             <td>{{order.deliveryDate}}</td>
@@ -82,10 +82,10 @@ import Axios from "axios";
 export default {
   data() {
     return {
-    //   orderDateFrom: new Date(),
-    //   orderDateTo: new Date(),
-    //   deliveryDateFrom: new Date(),
-    //   deliveryDateTo: new Date(),
+      orderDateFrom: new Date(),
+      orderDateTo: new Date(),
+      deliveryDateFrom: new Date(),
+      deliveryDateTo: new Date(),
       orders: []
     };
   },
@@ -114,6 +114,9 @@ export default {
           this.$dialogue.show(params);
         });
     }
+  },
+  computed: {
+ 
   },
   mounted() {
     Axios.get(`/order/orders`).then(response => (this.orders = response.data));

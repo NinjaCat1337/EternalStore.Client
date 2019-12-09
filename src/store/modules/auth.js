@@ -42,9 +42,9 @@ const actions = {
         const token = localStorage.getItem('token');
         if (!token) return;
 
-        const expirationDate = localStorage.getItem('expirationDate');
-        const now = new Date();
-        if (now >= expirationDate) return;
+        const expirationDate = Date.parse(localStorage.getItem('expirationDate'));
+        const now = Date.now();
+        if (now > expirationDate) return;
 
         commit('authorizeUser', { token })
     }

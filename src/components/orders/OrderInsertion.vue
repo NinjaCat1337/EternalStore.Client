@@ -70,7 +70,7 @@ export default {
         additionalInformation: this.additionalInformation,
         orderItems: this.$store.getters.orderItems
       };
-      Axios.post("order/orders", formData)
+      Axios.post(`order/orders`, formData)
         .catch(error => {
           const params = {
             title: "Error!",

@@ -49,9 +49,7 @@ export default {
       this.$dialogue.show(params);
     },
     removeProduct(product) {
-      Axios.delete(
-        "/store/categories/" + this.idCategory + "/products/" + product.idProduct
-      )
+      Axios.delete( `/store/categories/${this.idCategory}/products/${product.idProduct}`)
         .then(this.products.splice(this.products.indexOf(product), 1))
         .catch(error => {
           const params = {
@@ -67,7 +65,7 @@ export default {
     }
   },
   mounted() {
-    Axios.get("/store/categories/" + this.idCategory + "/products")
+    Axios.get(`/store/categories/${this.idCategory}/products`)
       .then(response => (this.products = response.data))
       .catch(error => {
         const params = {
