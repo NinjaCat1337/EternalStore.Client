@@ -46,7 +46,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(order, index) in filteredOrders" :key="index">
+          <tr v-for="(order, index) in orders" :key="index">
             <th scope="row">{{order.idOrder}}</th>
             <td>{{order.orderDate}}</td>
             <td>{{order.deliveryDate}}</td>
