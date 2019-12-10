@@ -1,39 +1,6 @@
 <template>
   <div class="field">
     <div class="card text-white bg-dark mb-1">
-      <span class="row text-center">
-        <!-- <div class="input">
-          <label for="orderDateFrom">Order Date (From)</label>
-          <input
-            class="text-center"
-            type="datetime-local"
-            id="orderDateFrom"
-            v-model="orderDateFrom"
-          />
-        </div>
-        <div class="input">
-          <label for="orderDateTo">Order Date (To)</label>
-          <input class="text-center" type="datetime-local" id="orderDateTo" v-model="orderDateTo" />
-        </div>
-        <div class="input">
-          <label for="deliveryDateTo">Delivery Date (To)</label>
-          <input
-            class="text-center"
-            type="datetime-local"
-            id="deliveryDateTo"
-            v-model="deliveryDateTo"
-          />
-        </div>
-        <div class="input">
-          <label for="deliveryDateFrom">Delivery Date (To)</label>
-          <input
-            class="text-center"
-            type="datetime-local"
-            id="deliveryDateFrom"
-            v-model="deliveryDateFrom"
-          />
-        </div>-->
-      </span>
       <table class="table table-dark">
         <thead>
           <tr class="text-center">
@@ -52,7 +19,7 @@
             <td>{{order.deliveryDate}}</td>
             <td>{{order.isApproved}}</td>
             <td>{{order.isDelivered}}</td>
-            <td>
+            <td class="text-center">
               <button
                 class="btn-main-dark btn-main-hover-green mr-1"
                 v-if="!order.isApproved"
@@ -72,24 +39,62 @@
           </tr>
         </tbody>
       </table>
+      <nav class="row justify-content-center">
+        <ul class="pagination">
+          <li class="page-item">
+            <button
+              class="btn-main-light"
+              :class="{'btn-main-hover-red': currentPage === 1, 'btn-main-hover-green': currentPage !== 1}"
+              :disabled="currentPage === 1"
+              @click="switchPage(currentPage - 1)"
+            >Back</button>
+          </li>
+          <li class="page-item" v-for="index in pages" :key="index">
+            <button
+              :class="{
+                'btn-main-dark btn-main-hover-red': currentPage === index, 
+                'btn-main-light btn-main-hover-green': currentPage !== index}"
+                :disabled="index === currentPage"
+              @click="switchPage(index)"
+            >{{index}}</button>
+          </li>
+          <li class="page-item">
+            <button
+              class="btn-main-light"
+              :class="{'btn-main-hover-red': currentPage === pages, 'btn-main-hover-green': currentPage !== pages}"
+              :disabled="currentPage === pages"
+              @click="switchPage(currentPage + 1)"
+            >Next</button>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 </template>
 
 <script>
 import Axios from "axios";
+const ordersOnPageCount = 10;
 
 export default {
   data() {
     return {
-      orderDateFrom: new Date(),
-      orderDateTo: new Date(),
-      deliveryDateFrom: new Date(),
-      deliveryDateTo: new Date(),
+      pages: 1,
+      currentPage: 1,
+      ascending: false,
       orders: []
     };
   },
   methods: {
+    switchPage(index) {
+      Axios.get(
+        `/order/orders?count=${ordersOnPageCount}&page=${index}&ascending=${this.ascending}`
+      ).then(response => {
+        this.orders = response.data.orders;
+        this.pages = Math.ceil(response.data.ordersCount / ordersOnPageCount);
+        this.currentPage = index;
+      });
+    },
     setApproved(idOrder, index) {
       Axios.patch(`order/orders/${idOrder}/approved`)
         .then((this.orders[index].isApproved = true))
@@ -115,11 +120,14 @@ export default {
         });
     }
   },
-  computed: {
- 
-  },
+  computed: {},
   mounted() {
-    Axios.get(`/order/orders`).then(response => (this.orders = response.data));
+    Axios.get(
+      `/order/orders?count=${ordersOnPageCount}&page=${this.currentPage}&ascending=${this.ascending}`
+    ).then(response => {
+      this.orders = response.data.orders;
+      this.pages = Math.ceil(response.data.ordersCount / ordersOnPageCount);
+    });
   }
 };
 </script>
