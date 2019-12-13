@@ -3,7 +3,7 @@
     <div class="card bg-dark mb-3 addition-form">
       <h5 class="card-header text-white text-center">Add New Product</h5>
       <div class="card-body">
-       <div class="input">
+        <div class="input">
           <label for="name">Name</label>
           <input type="text" id="name" v-model="name" />
         </div>

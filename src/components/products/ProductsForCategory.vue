@@ -18,9 +18,14 @@
         <router-link
           class="btn-main-dark btn-main-hover-yellow mr-1"
           :to="{name: 'editproduct', params: {idCategory, idProduct: product.idProduct}}"
+          v-if="userRole == 1"
           tag="button"
         >Edit Product</router-link>
-        <button class="btn-main-dark btn-main-hover-red" @click="tryRemoveProduct(product)">Remove</button>
+        <button
+          class="btn-main-dark btn-main-hover-red"
+          v-if="userRole == 1"
+          @click="tryRemoveProduct(product)"
+        >Remove</button>
       </div>
     </div>
   </div>
@@ -36,6 +41,11 @@ export default {
       products: []
     };
   },
+  computed: {
+    userRole() {
+      return this.$store.getters.userRole;
+    }
+  },
   methods: {
     tryRemoveProduct(product) {
       const params = {
@@ -49,7 +59,9 @@ export default {
       this.$dialogue.show(params);
     },
     removeProduct(product) {
-      Axios.delete( `/store/categories/${this.idCategory}/products/${product.idProduct}`)
+      Axios.delete(
+        `/store/categories/${this.idCategory}/products/${product.idProduct}`
+      )
         .then(this.products.splice(this.products.indexOf(product), 1))
         .catch(error => {
           const params = {

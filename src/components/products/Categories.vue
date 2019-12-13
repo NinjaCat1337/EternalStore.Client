@@ -9,19 +9,25 @@
         <router-link
           class="btn-main-dark btn-main-hover-green mr-1"
           :to="{name: 'addproduct', params: {idCategory: category.idCategory}}"
+          v-if="userRole == 1"
           tag="button"
         >Add Product</router-link>
         <router-link
           class="btn-main-dark btn-main-hover-yellow mr-1"
           :to="{ name: 'editcategory', params: {idCategory: category.idCategory}}"
+          v-if="userRole == 1"
           tag="button"
         >Edit Category</router-link>
         <button
           class="btn-main-dark btn-main-hover-blue mr-1"
-          v-if="!category.isEnabled"
+          v-if="!category.isEnabled && userRole == 1"
           @click="enableCategory(category, index)"
         >Enable</button>
-        <button class="btn-main-dark btn-main-hover-red" v-else @click="disableCategory(category, index)">Disable</button>
+        <button
+          class="btn-main-dark btn-main-hover-red"
+          v-if="category.isEnabled && userRole == 1"
+          @click="disableCategory(category, index)"
+        >Disable</button>
       </div>
     </div>
   </div>
@@ -37,11 +43,16 @@ export default {
       categories: []
     };
   },
+  computed: {
+    userRole() {
+      return this.$store.getters.userRole;
+    }
+  },
   methods: {
     enableCategory(category, index) {
       Axios.delete(`/store/categories/${category.idCategory}`)
-      .then(this.categories[index].isEnabled = true)
-      .catch(error => {
+        .then((this.categories[index].isEnabled = true))
+        .catch(error => {
           const params = {
             title: "Error!",
             text: error.response.data.error,
@@ -52,8 +63,8 @@ export default {
     },
     disableCategory(category, index) {
       Axios.delete(`/store/categories/${category.idCategory}`)
-      .then(this.categories[index].isEnabled = false)
-      .catch(error => {
+        .then((this.categories[index].isEnabled = false))
+        .catch(error => {
           const params = {
             title: "Error!",
             text: error.response.data.error,
@@ -75,5 +86,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

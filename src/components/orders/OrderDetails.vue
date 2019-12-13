@@ -5,37 +5,37 @@
       <div class="card-body">
         <span class="row">
           <div class="input upper-input">
-            <label for="orderDate" >Order Date</label>
+            <label for="orderDate">Order Date</label>
             <input
               class="text-center"
               type="datetime-local"
               id="orderDate"
-              v-model="orderDate" 
+              v-model="orderDate"
               :disabled="true"
             />
           </div>
           <div class="input upper-input">
-            <label for="deliveryDate" >Delivery Date</label>
+            <label for="deliveryDate">Delivery Date</label>
             <input
               class="text-center"
               type="datetime-local"
               id="deliveryDate"
-              v-model="deliveryDate" 
+              v-model="deliveryDate"
               :disabled="true"
             />
           </div>
           <div class="input upper-input">
             <label for="customerName">Name</label>
-            <input type="text" id="customerName" v-model="customerName" :disabled="true"/>
+            <input type="text" id="customerName" v-model="customerName" :disabled="true" />
           </div>
           <div class="input upper-input">
             <label for="customerNumber">Phone</label>
-            <input type="text" id="customerNumber" v-model="customerNumber" :disabled="true"/>
+            <input type="text" id="customerNumber" v-model="customerNumber" :disabled="true" />
           </div>
         </span>
         <div class="input">
           <label for="customerAddress">Address</label>
-          <input type="text" id="customerAddress" v-model="customerAddress" :disabled="true"/>
+          <input type="text" id="customerAddress" v-model="customerAddress" :disabled="true" />
         </div>
         <div class="input">
           <label for="additionalInformation">Additional Information</label>
@@ -49,7 +49,7 @@
         </div>
       </div>
       <h5 class="card-header">Order #{{idOrder}}</h5>
-       <table class="table table-dark">
+      <table class="table table-dark">
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -85,7 +85,7 @@ export default {
       orderItems: []
     };
   },
-   mounted() {
+  mounted() {
     Axios.get(`order/orders/${this.idOrder}`)
       .then(response => {
         this.orderDate = response.data.orderDate;
@@ -97,13 +97,13 @@ export default {
         this.orderItems = response.data.orderItems;
       })
       .catch(error => {
-          const params = {
-            title: "Error!",
-            text: error.response.data.error,
-            type: "error"
-          };
-          this.$dialogue.show(params);
-        });
+        const params = {
+          title: "Error!",
+          text: error.response.data.error,
+          type: "error"
+        };
+        this.$dialogue.show(params);
+      });
   }
 };
 </script>

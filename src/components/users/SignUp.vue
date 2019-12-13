@@ -38,7 +38,7 @@
 
 <script>
 import router from "../../routes.js";
-import Axios from "../../axios-auth.js";
+import Axios from "axios";
 
 export default {
   data() {
@@ -62,7 +62,7 @@ export default {
         email: this.email,
         terms: this.terms
       };
-      Axios.post(`register`, formData)
+      Axios.post(`/user/register`, formData)
         .then(response => {
           if (response.data.success) router.replace("/login");
         })

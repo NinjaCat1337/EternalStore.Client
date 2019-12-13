@@ -70,16 +70,15 @@ export default {
         additionalInformation: this.additionalInformation,
         orderItems: this.$store.getters.orderItems
       };
-      Axios.post(`order/orders`, formData)
-        .catch(error => {
-          const params = {
-            title: "Error!",
-            text: error.response.data.error,
-            type: "error"
-          };
-          this.$dialogue.show(params);
-        });
-        router.replace("/store")
+      Axios.post(`order/orders`, formData).catch(error => {
+        const params = {
+          title: "Error!",
+          text: error.response.data.error,
+          type: "error"
+        };
+        this.$dialogue.show(params);
+      });
+      router.replace("/store");
     }
   },
   components: {

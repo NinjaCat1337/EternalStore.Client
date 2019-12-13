@@ -3,7 +3,7 @@
     <div class="card bg-dark mb-3 modification-form">
       <h5 class="card-header text-white text-center">Edit Product</h5>
       <div class="card-body">
-       <div class="input">
+        <div class="input">
           <label for="name">Name</label>
           <input type="text" id="name" v-model="name" />
         </div>
@@ -46,8 +46,11 @@ export default {
         description: this.description,
         price: this.price
       };
-      Axios.put(`store/categories/${this.idCategory}/products/${this.idProduct}`, formData)
-        .then(router.replace('/store'))
+      Axios.put(
+        `store/categories/${this.idCategory}/products/${this.idProduct}`,
+        formData
+      )
+        .then(router.replace("/store"))
         .catch(error => {
           const params = {
             title: "Error!",
@@ -66,13 +69,13 @@ export default {
         this.price = response.data.price;
       })
       .catch(error => {
-          const params = {
-            title: "Error!",
-            text: error.response.data.error,
-            type: "error"
-          };
-          this.$dialogue.show(params);
-        });
+        const params = {
+          title: "Error!",
+          text: error.response.data.error,
+          type: "error"
+        };
+        this.$dialogue.show(params);
+      });
   }
 };
 </script>

@@ -33,7 +33,7 @@ export default {
         name: this.name
       };
       Axios.put(`store/categories/${this.idCategory}`, formData)
-        .then(router.replace('/store'))
+        .then(router.replace("/store"))
         .catch(error => {
           const params = {
             title: "Error!",
@@ -50,13 +50,13 @@ export default {
         this.name = response.data.name;
       })
       .catch(error => {
-          const params = {
-            title: "Error!",
-            text: error.response.data.error,
-            type: "error"
-          };
-          this.$dialogue.show(params);
-        });
+        const params = {
+          title: "Error!",
+          text: error.response.data.error,
+          type: "error"
+        };
+        this.$dialogue.show(params);
+      });
   }
 };
 </script>

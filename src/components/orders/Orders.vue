@@ -54,7 +54,7 @@
               :class="{
                 'btn-main-dark btn-main-hover-red': currentPage === index, 
                 'btn-main-light btn-main-hover-green': currentPage !== index}"
-                :disabled="index === currentPage"
+              :disabled="index === currentPage"
               @click="switchPage(index)"
             >{{index}}</button>
           </li>

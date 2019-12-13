@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import Axios from "../../axios-auth.js";
+import Axios from "axios";
 
 export default {
   data() {
@@ -34,13 +34,15 @@ export default {
         login: this.login,
         password: this.password
       };
-      Axios.post(`login`, formData)
+      Axios.post(`/user/login`, formData)
         .then(response => {
           if (response.data.success)
             this.$store
               .dispatch("login", {
+                idUser: response.data.idUser,
                 token: response.data.token,
-                expiresInMinutes: response.data.expiresInMinutes
+                expiresInMinutes: response.data.expiresInMinutes,
+                role: response.data.role
               })
               .then(
                 this.$store.dispatch("setLogoutTimer", {
