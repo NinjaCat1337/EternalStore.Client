@@ -19,12 +19,52 @@
           </div>
           <div class="input upper-input">
             <label for="customerNumber">Phone</label>
-            <input type="text" id="customerNumber" v-model="customerNumber" />
+            <div class="input-group">
+              <input type="text" id="customerNumber" class="form-control" v-model="customerNumber" />
+              <div class="input-group-append dropleft">
+                <button
+                  class="btn btn-outline-secondary dropdown-toggle"
+                  type="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  v-if="authetnicated"
+                ></button>
+                <div class="dropdown-menu">
+                  <a
+                    class="dropdown-item"
+                    v-for="(item, index) in numbers"
+                    :key="index"
+                    @click="setNumber(item.number)"
+                  >{{item.number}}</a>
+                </div>
+              </div>
+            </div>
           </div>
         </span>
         <div class="input">
           <label for="customerAddress">Address</label>
-          <input type="text" id="customerAddress" v-model="customerAddress" />
+          <div class="input-group">
+            <input type="text" id="customerAddress" class="form-control" v-model="customerAddress" />
+            <div class="input-group-append dropleft">
+              <button
+                class="btn btn-outline-secondary dropdown-toggle"
+                type="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                v-if="authetnicated"
+              ></button>
+              <div class="dropdown-menu">
+                <a
+                  class="dropdown-item"
+                  v-for="(item, index) in addresses"
+                  :key="index"
+                  @click="setAddress(item.address)"
+                >{{item.address}}</a>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="input">
           <label for="additionalInformation">Additional Information</label>
@@ -57,10 +97,34 @@ export default {
       customerName: "",
       customerAddress: "",
       customerNumber: "",
-      additionalInformation: ""
+      additionalInformation: "",
+      addresses: [],
+      numbers: []
     };
   },
+  computed: {
+    authetnicated() {
+      return this.$store.getters.isAuthenticated;
+    },
+    idUser() {
+      return this.$store.getters.idUser;
+    }
+  },
   methods: {
+    loadUserData() {
+      Axios.get(`/user/${this.idUser}/address`).then(
+        response => (this.addresses = response.data)
+      );
+      Axios.get(`/user/${this.idUser}/number`).then(
+        response => (this.numbers = response.data)
+      );
+    },
+    setAddress(address) {
+      this.customerAddress = address;
+    },
+    setNumber(number) {
+      this.customerNumber = number;
+    },
     onSubmit() {
       const formData = {
         deliveryDate: this.deliveryDate,
@@ -83,6 +147,11 @@ export default {
   },
   components: {
     componentOrderItems: OrderItems
+  },
+  mounted() {
+    if (this.authetnicated) {
+      this.loadUserData();
+    }
   }
 };
 </script>
