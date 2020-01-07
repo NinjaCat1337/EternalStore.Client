@@ -1,5 +1,6 @@
 <template>
   <div class="field">
+    <orders-search @setFindedOrdersToOrdersList="orders = $event"></orders-search>
     <div class="card text-white bg-dark mb-1">
       <table class="table table-dark">
         <thead>
@@ -73,6 +74,7 @@
 </template>
 
 <script>
+import OrdersSearch from "./OrdersSearch.vue";
 import Axios from "axios";
 const ordersOnPageCount = 10;
 
@@ -120,7 +122,9 @@ export default {
         });
     }
   },
-  computed: {},
+  components: {
+    OrdersSearch
+  },
   mounted() {
     Axios.get(
       `/order/orders?count=${ordersOnPageCount}&page=${this.currentPage}&ascending=${this.ascending}`
