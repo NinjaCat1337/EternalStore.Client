@@ -86,7 +86,7 @@ export default {
     };
   },
   mounted() {
-    Axios.get(`order/orders/${this.idOrder}`)
+    Axios.get(`store/orders/${this.idOrder}`)
       .then(response => {
         this.orderDate = response.data.orderDate;
         this.deliveryDate = response.data.deliveryDate;

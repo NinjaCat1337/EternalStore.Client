@@ -90,7 +90,7 @@ export default {
   methods: {
     switchPage(index) {
       Axios.get(
-        `/order/orders?count=${ordersOnPageCount}&page=${index}&ascending=${this.ascending}`
+        `/store/orders?count=${ordersOnPageCount}&page=${index}&ascending=${this.ascending}`
       ).then(response => {
         this.orders = response.data.orders;
         this.pages = Math.ceil(response.data.ordersCount / ordersOnPageCount);
@@ -98,7 +98,7 @@ export default {
       });
     },
     setApproved(idOrder, index) {
-      Axios.patch(`order/orders/${idOrder}/approved`)
+      Axios.patch(`store/orders/${idOrder}/approved`)
         .then((this.orders[index].isApproved = true))
         .catch(error => {
           const params = {
@@ -110,7 +110,7 @@ export default {
         });
     },
     setDelievered(idOrder, index) {
-      Axios.patch(`order/orders/${idOrder}/delivered`)
+      Axios.patch(`store/orders/${idOrder}/delivered`)
         .then((this.orders[index].isDelivered = true))
         .catch(error => {
           const params = {
@@ -127,7 +127,7 @@ export default {
   },
   mounted() {
     Axios.get(
-      `/order/orders?count=${ordersOnPageCount}&page=${this.currentPage}&ascending=${this.ascending}`
+      `/store/orders?count=${ordersOnPageCount}&page=${this.currentPage}&ascending=${this.ascending}`
     ).then(response => {
       this.orders = response.data.orders;
       this.pages = Math.ceil(response.data.ordersCount / ordersOnPageCount);

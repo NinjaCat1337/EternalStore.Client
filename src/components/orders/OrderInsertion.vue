@@ -134,7 +134,7 @@ export default {
         additionalInformation: this.additionalInformation,
         orderItems: this.$store.getters.orderItems
       };
-      Axios.post(`order/orders`, formData).catch(error => {
+      Axios.post(`store/orders`, formData).catch(error => {
         const params = {
           title: "Error!",
           text: error.response.data.error,

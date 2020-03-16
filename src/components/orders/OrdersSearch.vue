@@ -179,7 +179,7 @@ export default {
         ascending: this.ascending
       };
       console.log(searchData);
-      Axios.post(`order/orders/search`, searchData)
+      Axios.post(`store/orders/search`, searchData)
         .then(result => {
           this.searchResult = result.data.orders;
           console.log(result);
