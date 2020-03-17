@@ -9,13 +9,13 @@ const getters = {
     haveItemsInOrder(state) {
         return state.orderItems.length > 0;
     },
-    totalPrice(state){
+    totalPrice(state) {
         let totalPrice = 0;
-        state.orderItems.forEach(function(item) {
+        state.orderItems.forEach(function (item) {
             totalPrice += item.qty * item.price;
-          });
+        });
 
-          return totalPrice;
+        return totalPrice;
     }
 };
 
@@ -23,18 +23,21 @@ const mutations = {
     addProductToCart(state, product) {
         state.orderItems.push(product);
     },
-    incrementQty(state, index){
+    incrementQty(state, index) {
         let newElement = state.orderItems[index];
         newElement.qty++;
         state.orderItems.splice(index, 1, newElement)
     },
-    decrementQty(state, index){
+    decrementQty(state, index) {
         let newElement = state.orderItems[index];
         newElement.qty--;
         state.orderItems.splice(index, 1, newElement)
     },
-    removeItem(state, index){
+    removeItem(state, index) {
         state.orderItems.splice(index, 1);
+    },
+    clearCart(state) {
+        state.orderItems = [];
     }
 };
 
@@ -50,14 +53,17 @@ const actions = {
             localStorage.setItem("cart", state.orderItems)
         }
     },
-    incrementQty({commit}, index){
+    incrementQty({ commit }, index) {
         commit('incrementQty', index);
     },
-    decrementQty({commit}, index){
+    decrementQty({ commit }, index) {
         commit('decrementQty', index);
     },
-    removeItem({commit}, index){
+    removeItem({ commit }, index) {
         commit('removeItem', index);
+    },
+    clearCart({ commit }) {
+        commit('clearCart')
     }
 };
 

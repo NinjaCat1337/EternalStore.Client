@@ -134,15 +134,21 @@ export default {
         additionalInformation: this.additionalInformation,
         orderItems: this.$store.getters.orderItems
       };
-      Axios.post(`store/orders`, formData).catch(error => {
-        const params = {
-          title: "Error!",
-          text: error.response.data.error,
-          type: "error"
-        };
-        this.$dialogue.show(params);
-      });
-      router.replace("/store");
+      Axios.post(`store/orders`, formData)
+        .catch(error => {
+          const params = {
+            title: "Error!",
+            text: error.response.data.error,
+            type: "error"
+          };
+          this.$dialogue.show(params);
+        })
+        .then(response => {
+          if (response.status == 200) {
+            this.$store.dispatch("clearCart");
+            router.replace("/store");
+          }
+        });
     }
   },
   components: {
