@@ -2,7 +2,7 @@
   <div id="accordion">
     <div class="card bg-dark">
       <div class="card-header" id="headingOne">
-        <div class="mb-0 text-left">
+        <div class="row mb-0 text-left">
           <button
             class="btn-main-dark btn-main-hover-green"
             data-toggle="collapse"
@@ -10,6 +10,20 @@
             aria-expanded="true"
             aria-controls="collapseOne"
           >Search</button>
+          <label class="filter-label">Count:</label>
+          <input
+            class="text-center filter-header-input"
+            type="number"
+            id="count"
+            v-model="filter.count"
+          />
+          <label class="filter-label">Ascending:</label>
+          <input
+            class="text-center filter-header-checkbox"
+            type="checkbox"
+            id="ascending"
+            v-model="filter.ascending"
+          />
         </div>
       </div>
       <div
@@ -26,7 +40,7 @@
                 class="text-center"
                 type="datetime-local"
                 id="orderDateFrom"
-                v-model="orderDateFrom"
+                v-model="filter.orderDateFrom"
               />
             </div>
             <div class="input upper-input">
@@ -35,7 +49,7 @@
                 class="text-center"
                 type="datetime-local"
                 id="orderDateTo"
-                v-model="orderDateTo"
+                v-model="filter.orderDateTo"
               />
             </div>
             <div class="input upper-input">
@@ -44,7 +58,7 @@
                 class="text-center"
                 type="datetime-local"
                 id="deliveryDateFrom"
-                v-model="deliveryDateFrom"
+                v-model="filter.deliveryDateFrom"
               />
             </div>
             <div class="input upper-input">
@@ -53,7 +67,7 @@
                 class="text-center"
                 type="datetime-local"
                 id="deliveryDateTo"
-                v-model="deliveryDateTo"
+                v-model="filter.deliveryDateTo"
               />
             </div>
           </div>
@@ -65,7 +79,7 @@
                   class="custom-control-input"
                   id="isApprovedTrue"
                   name="isApprovedGroup"
-                  v-model="isApproved"
+                  v-model="filter.isApproved"
                   v-bind:value="true"
                 />
                 <label class="custom-control-label" for="isApprovedTrue">Is Approved</label>
@@ -76,7 +90,7 @@
                   class="custom-control-input"
                   id="isApprovedFalse"
                   name="isApprovedGroup"
-                  v-model="isApproved"
+                  v-model="filter.isApproved"
                   v-bind:value="false"
                 />
                 <label class="custom-control-label" for="isApprovedFalse">Not Approved</label>
@@ -87,7 +101,7 @@
                   class="custom-control-input"
                   id="isApprovedNull"
                   name="isApprovedGroup"
-                  v-model="isApproved"
+                  v-model="filter.isApproved"
                   v-bind:value="null"
                   checked
                 />
@@ -101,7 +115,7 @@
                   class="custom-control-input"
                   id="isDeliveredTrue"
                   name="isDeliveredGroup"
-                  v-model="isDelivered"
+                  v-model="filter.isDelivered"
                   v-bind:value="true"
                 />
                 <label class="custom-control-label" for="isDeliveredTrue">Is Delivered</label>
@@ -112,7 +126,7 @@
                   class="custom-control-input"
                   id="isDeliveredFalse"
                   name="isDeliveredGroup"
-                  v-model="isDelivered"
+                  v-model="filter.isDelivered"
                   v-bind:value="false"
                 />
                 <label class="custom-control-label" for="isDeliveredFalse">Not Delivered</label>
@@ -123,7 +137,7 @@
                   class="custom-control-input"
                   id="isDeliveredNull"
                   name="isDeliveredGroup"
-                  v-model="isDelivered"
+                  v-model="filter.isDelivered"
                   v-bind:value="null"
                   checked
                 />
@@ -148,42 +162,38 @@ import Axios from "axios";
 export default {
   data() {
     return {
-      orderDateFrom: null,
-      orderDateTo: null,
-      deliveryDateFrom: null,
-      deliveryDateTo: null,
-      isApproved: null,
-      isDelivered: null,
-      ascending: false,
+      filter: {
+        orderDateFrom: null,
+        orderDateTo: null,
+        deliveryDateFrom: null,
+        deliveryDateTo: null,
+        isApproved: null,
+        isDelivered: null,
+        ascending: false,
+        count: 10
+      },
       searchResult: []
     };
   },
   methods: {
     clear() {
-      this.orderDateFrom = null;
-      this.orderDateTo = null;
-      this.deliveryDateFrom = null;
-      this.deliveryDateTo = null;
-      this.isApproved = null;
-      this.isDelivered = null;
-      this.ascending = false;
+      this.filter.orderDateFrom = null;
+      this.filter.orderDateTo = null;
+      this.filter.deliveryDateFrom = null;
+      this.filter.deliveryDateTo = null;
+      this.filter.isApproved = null;
+      this.filter.isDelivered = null;
+      this.filter.ascending = null;
     },
     find() {
-      const searchData = {
-        orderDateFrom: this.orderDateFrom,
-        orderDateTo: this.orderDateTo,
-        deliveryDateFrom: this.deliveryDateFrom,
-        deliveryDateTo: this.deliveryDateTo,
-        isApproved: this.isApproved,
-        isDelivered: this.isDelivered,
-        ascending: this.ascending
-      };
-      console.log(searchData);
-      Axios.post(`store/orders/search`, searchData)
-        .then(result => {
-          this.searchResult = result.data.orders;
-          console.log(result);
+      this.filter.page = this.$parent.currentPage;
+      Axios.post(`store/orders/filter`, this.filter)
+        .then(response => {
+          this.searchResult = response.data.orders;
           this.$emit("setFindedOrdersToOrdersList", this.searchResult);
+          this.$parent.pages = Math.ceil(
+            response.data.ordersCount / this.filter.count
+          );
         })
         .catch(error => {
           const params = {
@@ -199,4 +209,18 @@ export default {
 </script>
 
 <style scoped>
+.filter-label {
+  color: white;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
+.filter-header-input {
+  width: 70px;
+}
+
+.filter-header-checkbox {
+  margin-top: 13px;
+}
 </style>

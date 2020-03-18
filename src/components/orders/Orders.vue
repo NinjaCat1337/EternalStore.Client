@@ -1,6 +1,6 @@
 <template>
   <div class="field">
-    <orders-search @setFindedOrdersToOrdersList="orders = $event"></orders-search>
+    <orders-filter ref="ordersFilter" @setFindedOrdersToOrdersList="orders = $event"></orders-filter>
     <div class="card text-white bg-dark mb-1">
       <table class="table table-dark">
         <thead>
@@ -74,26 +74,28 @@
 </template>
 
 <script>
-import OrdersSearch from "./OrdersSearch.vue";
+import OrdersFilter from "./OrdersFilter.vue";
 import Axios from "axios";
-const ordersOnPageCount = 10;
 
 export default {
   data() {
     return {
       pages: 1,
       currentPage: 1,
-      ascending: false,
       orders: []
     };
   },
+  computed: {
+    filter() {
+      return this.$refs.ordersFilter.filter;
+    }
+  },
   methods: {
     switchPage(index) {
-      Axios.get(
-        `/store/orders?count=${ordersOnPageCount}&page=${index}&ascending=${this.ascending}`
-      ).then(response => {
+      this.filter.page = index;
+      Axios.post(`store/orders/filter`, this.filter).then(response => {
         this.orders = response.data.orders;
-        this.pages = Math.ceil(response.data.ordersCount / ordersOnPageCount);
+        this.pages = Math.ceil(response.data.ordersCount / this.filter.count);
         this.currentPage = index;
       });
     },
@@ -123,14 +125,12 @@ export default {
     }
   },
   components: {
-    OrdersSearch
+    OrdersFilter
   },
   mounted() {
-    Axios.get(
-      `/store/orders?count=${ordersOnPageCount}&page=${this.currentPage}&ascending=${this.ascending}`
-    ).then(response => {
+    Axios.post(`store/orders/filter`, this.filter).then(response => {
       this.orders = response.data.orders;
-      this.pages = Math.ceil(response.data.ordersCount / ordersOnPageCount);
+      this.pages = Math.ceil(response.data.ordersCount / this.filter.count);
     });
   }
 };
