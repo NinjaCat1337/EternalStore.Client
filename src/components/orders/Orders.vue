@@ -16,8 +16,8 @@
         <tbody>
           <tr v-for="(order, index) in orders" :key="index">
             <th scope="row">{{order.idOrder}}</th>
-            <td>{{order.orderDate}}</td>
-            <td>{{order.deliveryDate}}</td>
+            <td>{{order.orderDate | formatDate}}</td>
+            <td>{{order.deliveryDate | formatDate}}</td>
             <td>{{order.isApproved}}</td>
             <td>{{order.isDelivered}}</td>
             <td class="text-center">
@@ -122,6 +122,12 @@ export default {
           };
           this.$dialogue.show(params);
         });
+    }
+  },
+  filters: {
+    formatDate(value) {
+      let date = new Date(value);
+      return date.toLocaleString();
     }
   },
   components: {

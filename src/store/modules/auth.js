@@ -10,10 +10,10 @@ const getters = {
     isAuthenticated(state) {
         return state.token !== null;
     },
-    userRole(state){
+    userRole(state) {
         return state.role;
     },
-    idUser(state){
+    idUser(state) {
         return state.idUser;
     }
 };
@@ -56,7 +56,10 @@ const actions = {
 
         const expirationDate = Date.parse(localStorage.getItem('expirationDate'));
         const now = Date.now();
-        if (now > expirationDate) return;
+
+        if (now > expirationDate) {
+            return;
+        }
 
         const idUser = localStorage.getItem('idUser');
         if (!idUser) return;
