@@ -16,6 +16,14 @@
         <li class="nav-item">
           <router-link class="nav-link" :to="{name: 'orders'}" v-if="userRole == 1" tag="a">Orders</router-link>
         </li>
+        <li class="nav-item">
+          <router-link
+            class="nav-link"
+            :to="{name: 'scheduler'}"
+            v-if="userRole == 1"
+            tag="a"
+          >Scheduler</router-link>
+        </li>
       </ul>
       <ul class="main-menu-right navbar-nav d-flex justify-content-end">
         <li class="nav-item" v-if="haveItemsInOrder">

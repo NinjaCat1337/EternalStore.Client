@@ -30,7 +30,6 @@ export default {
       const formData = {
         name: this.name
       };
-      console.log(formData);
       Axios.post(`store/categories`, formData)
         .then(router.replace("/store"))
         .catch(error => {

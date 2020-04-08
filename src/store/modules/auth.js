@@ -26,6 +26,8 @@ const mutations = {
     },
     logoutUser(state) {
         state.token = null;
+        state.idUser = null;
+        state.role = null;
     }
 };
 
@@ -58,6 +60,7 @@ const actions = {
         const now = Date.now();
 
         if (now > expirationDate) {
+            commit('logoutUser')
             return;
         }
 

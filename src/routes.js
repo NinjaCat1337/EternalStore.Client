@@ -12,6 +12,9 @@ import OrderDetails from './components/orders/OrderDetails.vue';
 import SignIn from './components/users/SignIn.vue';
 import SignUp from './components/users/SignUp.vue';
 import UserProfile from './components/users/UserProfile.vue';
+import Scheduler from './components/notifications/Scheduler.vue';
+import SchedulerItemInsertion from './components/notifications/SchedulerItemInsertion.vue';
+import SchedulerItemModification from './components/notifications/SchedulerItemModification';
 
 Vue.use(VueRouter);
 
@@ -27,8 +30,11 @@ export const routes = [
     { name: "register", path: '/register', component: SignUp },
     { name: "login", path: '/login', component: SignIn },
     { name: "profile", path: '/profile', component: UserProfile },
-    { path :'*', redirect: { name: 'store' } } 
-    
+    { name: "scheduler", path: '/scheduler', component: Scheduler },
+    { name: "addscheduleritem", path: '/schedulers/additem', component: SchedulerItemInsertion },
+    { name: "editscheduleritem", path: '/schedulers/items/:idSchedulerItem', component: SchedulerItemModification },
+    { path: '*', redirect: { name: 'store' } }
+
 ];
 
-export default new VueRouter({mode: 'history', routes})
+export default new VueRouter({ mode: 'history', routes })
