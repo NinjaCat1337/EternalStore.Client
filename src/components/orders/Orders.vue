@@ -18,8 +18,12 @@
             <th scope="row">{{order.idOrder}}</th>
             <td>{{order.orderDate | formatDate}}</td>
             <td>{{order.deliveryDate | formatDate}}</td>
-            <td>{{order.isApproved}}</td>
-            <td>{{order.isDelivered}}</td>
+            <td>
+              <img class="truefalse-icon" :src="getTrueFalseImageUrl(order.isApproved)" />
+            </td>
+            <td>
+              <img class="truefalse-icon" :src="getTrueFalseImageUrl(order.isDelivered)" />
+            </td>
             <td class="text-center">
               <button
                 class="btn-main-dark btn-main-hover-green mr-1"
@@ -91,6 +95,14 @@ export default {
     }
   },
   methods: {
+    getTrueFalseImageUrl(value) {
+      if (value == true) {
+        return `/images/true.png`;
+      }
+      if (value == false) {
+        return "/images/false.png";
+      }
+    },
     switchPage(index) {
       this.filter.page = index;
       Axios.post(`store/orders/filter`, this.filter).then(response => {
@@ -150,5 +162,12 @@ export default {
 .inner-field {
   width: 98%;
   align-self: center;
+}
+.truefalse-icon {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 30px;
+  height: 30px;
 }
 </style>
