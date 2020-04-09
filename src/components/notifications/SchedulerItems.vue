@@ -9,10 +9,19 @@
       <div class="card-body">
         <p class="card-text">{{schedulerItem.message.subject}}</p>
         <p class="card-text">{{schedulerItem.message.body}}</p>
-        <p class="card-text">{{schedulerItem.settings.executionFrequency}}</p>
-        <p class="card-text">{{schedulerItem.settings.executionHours}}</p>
-        <p class="card-text">{{schedulerItem.settings.executionMinutes}}</p>
-        <p class="card-text">{{schedulerItem.settings.executionDayOfWeek}}</p>
+        <hr />
+        <div class="row">
+          <p
+            class="card-text ml-3"
+          >Execution Frequency: {{getExecutionFrequency(schedulerItem.settings.executionFrequency)}}</p>
+          <p
+            class="card-text ml-3"
+            v-if="schedulerItem.settings.executionFrequency == 2"
+          >Execution Day: {{getExecutionDay(schedulerItem.settings.executionFrequency)}}</p>
+          <p
+            class="card-text ml-3"
+          >Execution Time: {{schedulerItem.settings.executionHours}}:{{schedulerItem.settings.executionMinutes}}</p>
+        </div>
       </div>
       <div class="card-footer text-right">
         <button
@@ -43,6 +52,7 @@
 
 <script>
 import Axios from "axios";
+import scheduler from "../../scheduler.js";
 
 export default {
   data() {
@@ -53,9 +63,22 @@ export default {
   computed: {
     userRole() {
       return this.$store.getters.userRole;
+    },
+    executionFrequencies() {
+      return scheduler.executionFrequencies();
+    },
+    daysOfWeek() {
+      return scheduler.daysOfWeek();
     }
   },
   methods: {
+    getExecutionFrequency(idExecutionFrequency) {
+      return this.executionFrequencies.find(d => d.id == idExecutionFrequency)
+        .value;
+    },
+    getExecutionDay(idDayOfWeek) {
+      return this.daysOfWeek.find(d => d.id == idDayOfWeek).value;
+    },
     toggleIsActive(schedulerItem, index) {
       Axios.patch(`/scheduler/items/${schedulerItem.id}/isActive`)
         .then(response => {
