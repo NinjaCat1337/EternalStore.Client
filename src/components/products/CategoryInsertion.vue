@@ -31,7 +31,11 @@ export default {
         name: this.name
       };
       Axios.post(`store/categories`, formData)
-        .then(router.replace("/store"))
+        .then(response => {
+          if (response.status == 200) {
+            router.replace("/store");
+          }
+        })
         .catch(error => {
           const params = {
             title: "Error!",
