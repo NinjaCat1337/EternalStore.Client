@@ -15,6 +15,16 @@
         <p class="card-text">{{schedulerItem.settings.executionDayOfWeek}}</p>
       </div>
       <div class="card-footer text-right">
+        <button
+          class="btn-main-dark btn-main-hover-green"
+          v-if="userRole == 1 && !schedulerItem.isActive"
+          @click="toggleIsActive(schedulerItem, index)"
+        >Run</button>
+        <button
+          class="btn-main-dark btn-main-hover-red"
+          v-if="userRole == 1 && schedulerItem.isActive"
+          @click="toggleIsActive(schedulerItem, index)"
+        >Stop</button>
         <router-link
           class="btn-main-dark btn-main-hover-yellow mr-1"
           :to="{name: 'editscheduleritem', params: {idSchedulerItem: schedulerItem.id}}"
@@ -24,7 +34,7 @@
         <button
           class="btn-main-dark btn-main-hover-red"
           v-if="userRole == 1"
-          @click="tryRemoveProduct(product)"
+          @click="deleteSchedulerItem(product)"
         >Remove</button>
       </div>
     </div>
@@ -43,6 +53,44 @@ export default {
   computed: {
     userRole() {
       return this.$store.getters.userRole;
+    }
+  },
+  methods: {
+    toggleIsActive(schedulerItem, index) {
+      Axios.patch(`/scheduler/items/${schedulerItem.id}/isActive`)
+        .then(response => {
+          if (response.status == 200) {
+            this.schedulerItems[index].isActive = !this.schedulerItems[index]
+              .isActive;
+          }
+        })
+        .catch(error => {
+          const params = {
+            title: "Error!",
+            text: error.response.data.error,
+            type: "error"
+          };
+          this.$dialogue.show(params);
+        });
+    },
+    deleteSchedulerItem(schedulerItem) {
+      Axios.delete(`/scheduler/items/${schedulerItem.id}`)
+        .then(response => {
+          if (response.status == 200) {
+            this.schedulerItems.splice(
+              this.schedulerItems.indexOf(schedulerItem),
+              1
+            );
+          }
+        })
+        .catch(error => {
+          const params = {
+            title: "Error!",
+            text: error.response.data.error,
+            type: "error"
+          };
+          this.$dialogue.show(params);
+        });
     }
   },
   mounted() {
