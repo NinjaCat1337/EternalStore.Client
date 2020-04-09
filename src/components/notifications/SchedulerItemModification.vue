@@ -89,7 +89,11 @@ export default {
         executionDayOfWeek: this.executionDayOfWeek.id
       };
       Axios.put(`scheduler/items`, formData)
-        .then(router.replace("/scheduler"))
+        .then(response => {
+          if (response.status == 200) {
+            router.replace("/scheduler");
+          }
+        })
         .catch(error => {
           const params = {
             title: "Error!",

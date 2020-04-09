@@ -1,35 +1,53 @@
 <template>
   <div id="schedulerItemInsertion" class="field">
     <div class="card bg-dark mb-3 addition-form">
-      <h5 class="card-header text-white text-center">Add New Scheduler Item</h5>
+      <h5 class="card-header text-white text-center">Edit Scheduler Item</h5>
       <div class="card-body">
         <div class="input">
           <label for="name">Name</label>
-          <input type="name" id="name" v-model="name" />
+          <input type="text" id="name" v-model="name" />
         </div>
         <div class="input">
           <label for="subject">Subject</label>
-          <input type="subject" id="subject" v-model="subject" />
+          <input type="text" id="subject" v-model="subject" />
         </div>
         <div class="input">
           <label for="body">Body</label>
-          <input type="body" id="body" v-model="body" />
+          <textarea class="form-control" rows="7" type="text" id="body" v-model="body" />
         </div>
-        <div class="input">
-          <label for="executionFrequency">Execution Frequency</label>
-          <input type="executinFrequency" id="executionFrequency" v-model="executionFrequency" />
-        </div>
-        <div class="input">
-          <label for="executionHours">Execution Hours</label>
-          <input type="executionHours" id="executionHours" v-model="executionHours" />
-        </div>
-        <div class="input">
-          <label for="executionMinutes">Execution Minutes</label>
-          <input type="executionMinutes" id="executionMinutes" v-model="executionMinutes" />
-        </div>
-        <div class="input">
-          <label for="executionDayOfWeek">Execution Day Of Week</label>
-          <input type="executionDayOfWeek" id="executionDayOfWeek" v-model="executionDayOfWeek" />
+        <div class="row">
+          <div class="input">
+            <label for="executionFrequency">Execution Frequency:</label>
+            <select class="form-control" id="executionFrequency" v-model="executionFrequency">
+              <option
+                v-for="(item, index) in executionFrequencies"
+                :key="index"
+                :label="item.value"
+              >{{item.id}}</option>
+            </select>
+          </div>
+          <div class="input">
+            <label for="executionHours">Execution Hours</label>
+            <select class="form-control" id="executionHours" v-model="executionHours">
+              <option v-for="n in 24" :key="n">{{n-1}}</option>
+            </select>
+          </div>
+          <div class="input">
+            <label for="executionMinutes">Execution Minutes</label>
+            <select class="form-control" id="executionMinutes" v-model="executionMinutes">
+              <option v-for="n in 60" :key="n">{{n-1}}</option>
+            </select>
+          </div>
+          <div class="input" v-if="executionFrequency == 2">
+            <label for="executionDayOfWeek">Execution Day:</label>
+            <select class="form-control" id="executionDayOfWeek" v-model="executionDayOfWeek">
+              <option
+                v-for="(item, index) in daysOfWeek"
+                :key="index"
+                :label="item.value"
+              >{{item.id}}</option>
+            </select>
+          </div>
         </div>
       </div>
       <div class="card-footer text-center">
@@ -42,17 +60,19 @@
 <script>
 import Axios from "axios";
 import router from "../../routes.js";
+import scheduler from "../../scheduler.js";
 
 export default {
   data() {
     return {
-      name: "",
-      subject: "",
-      body: "",
-      executionFrequency: "",
-      executionHours: "",
-      executionMinutes: "",
-      executionDayOfWeek: ""
+      name: null,
+      subject: null,
+      body: null,
+      executionFrequency: null,
+      executionHours: null,
+      executionMinutes: null,
+      executionDayOfWeek: null,
+      dayOfWeek: null
     };
   },
   methods: {
@@ -67,7 +87,11 @@ export default {
         executionDayOfWeek: this.executionDayOfWeek
       };
       Axios.post(`scheduler/items`, formData)
-        .then(router.replace("/scheduler"))
+        .then(response => {
+          if (response.status == 200) {
+            router.replace("/scheduler");
+          }
+        })
         .catch(error => {
           const params = {
             title: "Error!",
@@ -76,6 +100,14 @@ export default {
           };
           this.$dialogue.show(params);
         });
+    }
+  },
+  computed: {
+    executionFrequencies() {
+      return scheduler.executionFrequencies();
+    },
+    daysOfWeek() {
+      return scheduler.daysOfWeek();
     }
   }
 };

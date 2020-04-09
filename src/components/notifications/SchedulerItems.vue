@@ -43,7 +43,7 @@
         <button
           class="btn-main-dark btn-main-hover-red"
           v-if="userRole == 1"
-          @click="deleteSchedulerItem(product)"
+          @click="deleteSchedulerItem(schedulerItem)"
         >Remove</button>
       </div>
     </div>
