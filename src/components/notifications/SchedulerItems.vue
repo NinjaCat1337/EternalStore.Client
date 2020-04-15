@@ -43,7 +43,7 @@
         <button
           class="btn-main-dark btn-main-hover-red"
           v-if="userRole == 1"
-          @click="deleteSchedulerItem(schedulerItem)"
+          @click="tryDeleteSchedulerItem(schedulerItem)"
         >Remove</button>
       </div>
     </div>
@@ -95,6 +95,17 @@ export default {
           };
           this.$dialogue.show(params);
         });
+    },
+    tryDeleteSchedulerItem(schedulerItem) {
+      const params = {
+        title: "Attention!",
+        text: "Are you sure to delete this item?",
+        type: "confirm",
+        onConfirm: () => {
+          return this.deleteSchedulerItem(schedulerItem);
+        }
+      };
+      this.$dialogue.show(params);
     },
     deleteSchedulerItem(schedulerItem) {
       Axios.delete(`/scheduler/items/${schedulerItem.id}`)
