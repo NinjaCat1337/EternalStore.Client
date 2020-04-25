@@ -3,7 +3,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <ul class="main-menu-left navbar-nav mr-auto">
         <li class="nav-item">
-          <router-link class="nav-link" :to="{name: 'store'}" tag="a">Store</router-link>
+          <router-link class="nav-link" :to="{name: 'store'}" tag="a">Store TEST</router-link>
         </li>
         <li class="nav-item">
           <router-link
