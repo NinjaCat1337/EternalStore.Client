@@ -4,10 +4,11 @@ import App from './App.vue';
 import router from './routes.js';
 import Axios from 'axios';
 import Dialogue from './dialogue.js';
+import appSettings from '../appSettings.json';
 
 Vue.use(Dialogue);
 
-Axios.defaults.baseURL = 'https://localhost:44346/api/';
+Axios.defaults.baseURL = appSettings.apiDefaultBaseUrl;
 Axios.interceptors.request.use(
   (config) => {
     let token = localStorage.getItem('token');
