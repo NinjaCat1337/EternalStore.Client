@@ -99,7 +99,7 @@ export default {
     tryDeleteSchedulerItem(schedulerItem) {
       const params = {
         title: "Attention!",
-        text: "Are you sure to delete this scheduler item?",
+        text: "Are you sure to delete this item?",
         type: "confirm",
         onConfirm: () => {
           return this.deleteSchedulerItem(schedulerItem);
